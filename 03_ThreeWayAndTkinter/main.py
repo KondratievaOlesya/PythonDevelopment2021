@@ -11,15 +11,14 @@ BUTTON_HEIGHT = 2
 class Application(tk.Tk):
     def __init__(self, master=None):
         tk.Tk.__init__(self, master)
-        # self.minsize(200, 100)
-        # self.grid()
-        self.game_frame = tk.Frame(self, bg="#273E47")
+        self.game_frame = tk.Frame(self)
         self.buttons_frame = tk.Frame(self)
         self.buttons = []
         self.game_list = []
         self.new_game()
 
     def is_game_correct(self):
+        """ Find out if placement of buttons is correct """
         n = [0 for i in range(N * N)]
         e = 0
         for i in range(N * N):
@@ -35,6 +34,7 @@ class Application(tk.Tk):
         return N_sum % 2 == 0
 
     def win(self):
+        """Find out if game in win state. Show message box if so"""
         for i in range(N * N - 1):
             if self.game_list[i] != i + 1:
                 return False
@@ -42,6 +42,7 @@ class Application(tk.Tk):
         self.new_game()
 
     def new_game(self):
+        """ Start game """
         self.game_list = [i for i in range(N * N)]
         random.shuffle(self.game_list)
         while not self.is_game_correct():
@@ -50,10 +51,12 @@ class Application(tk.Tk):
         self.build_game()
 
     def clear_all(self):
+        """ Destroy buttons from game frame """
         for button in self.buttons:
             button.destroy()
 
     def move_button(this, id):
+        """ Create function to move button with index id to empty space """
         def wrapper(self=this, idx=id):
             right_button = idx + 1 if idx % N != N - 1 else None
             left_button = idx - 1 if idx % N != 0 else None
@@ -72,20 +75,21 @@ class Application(tk.Tk):
         return wrapper
 
     def build_game(self):
+        """ Creates buttons on game field. """
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
         # Exit and New buttons
         self.buttons_frame.grid(row=0, column=0, sticky='NSEW')
-        self.newButton = tk.Button(self.buttons_frame, text='New', command=self.new_game)
-        self.exitButton = tk.Button(self.buttons_frame, text='Exit', command=self.quit)
+        new_button = tk.Button(self.buttons_frame, text='New', command=self.new_game)
+        exit_button = tk.Button(self.buttons_frame, text='Exit', command=self.quit)
 
         self.buttons_frame.grid_rowconfigure(0, weight=1, pad=PADDING)
         self.buttons_frame.grid_columnconfigure(0, weight=1, pad=PADDING)
         self.buttons_frame.grid_columnconfigure(1, weight=1, pad=PADDING)
-        self.newButton.grid(column=0, row=0, sticky='NSEW')
-        self.exitButton.grid(column=1, row=0, sticky='NSEW')
+        new_button.grid(column=0, row=0, sticky='NSEW')
+        exit_button.grid(column=1, row=0, sticky='NSEW')
 
         # Game field buttons
         self.game_frame.grid(row=1, column=0, columnspan=4, sticky='NSEW')
@@ -105,7 +109,7 @@ class Application(tk.Tk):
                               width=BUTTON_WIDTH,
                               height=BUTTON_HEIGHT,
                               command=self.move_button(i)
-                              )
+                    )
                 )
                 self.buttons[-1].grid(row=i // N, column=i % N, sticky='NSEW')
 
