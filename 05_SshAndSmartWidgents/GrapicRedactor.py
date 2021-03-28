@@ -112,10 +112,10 @@ class App(Application):
             type, x1, y1, x2, y2, width, outline_color, fill_color, new_line = configs
             self.canvas.itemconfig(tag, width=width, outline=outline_color, fill=fill_color)
             self.canvas.coords(tag, x1[2:-1], y1[:-1], x2[:-1], y2[:-2])
-            self.text.tag_delete('red')
+            self.text.tag_delete(f'red{tag}.0{int(tag) + 1}.0')
         except Exception as e:
-            self.text.tag_add('red', f'{tag}.0', f'{int(tag) + 1}.0')
-            self.text.tag_configure('red', background='red')
+            self.text.tag_add(f'red{tag}.0{int(tag) + 1}.0', f'{tag}.0', f'{int(tag) + 1}.0')
+            self.text.tag_configure(f'red{tag}.0{int(tag) + 1}.0', background='red')
 
     def create_widgets(self):
         self.create_text()
