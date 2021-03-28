@@ -122,5 +122,5 @@ class App(Application):
         self.create_canvas()
 
 
-app = App(title="Homework5")
+app = App(title="Graphics Editor")
 app.mainloop()
