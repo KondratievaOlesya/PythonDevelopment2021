@@ -5,9 +5,7 @@ FONT_WIDTH = 8
 
 class InputLabel(tk.Label):
     def __init__(self, master=None, **kwargs):
-        # self.label_text = tk.StringVar()
-        # self.label_text = kwargs.get('text')
-        super().__init__(master, **kwargs)
+        super().__init__(master, font='TkFixedFont', anchor="w", **kwargs)
         self.frame = tk.Frame(self, width=1, bg='black')
         self.frame_placed = False
         self.bind('<Button-1>', self.focus_in)
@@ -64,7 +62,7 @@ for column in range(1):
     app.columnconfigure(column, weight=1)
 for row in range(2):
     app.rowconfigure(row, weight=1)
-label = InputLabel(app, font='TkFixedFont', anchor="w")
+label = InputLabel(app)
 label.grid(row=0, column=0, sticky='EW')
 
 quit_button = tk.Button(app, text='Quit', command=app.quit)
